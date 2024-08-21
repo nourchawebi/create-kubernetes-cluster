@@ -7,12 +7,9 @@
 </p>
 
 <p align="center">
-  <strong>Create a Kubernetes cluster with Minikube in just a few simple steps.</strong>
+  <strong>Create Kubernetes Cluster</strong>
 </p>
-
-## Prerequisites
-
-Before you begin, ensure you have the following installed on your machine:
+This guide will walk you through the steps required to create a Kubernetes cluster, including setting up the necessary tools and configurations.
 
 <ul>
   <li><strong>kubectl</strong>: Command-line tool to interact with Kubernetes clusters.</li>
@@ -20,20 +17,3 @@ Before you begin, ensure you have the following installed on your machine:
   <li><strong>Docker</strong>: Container platform to manage and deploy applications.</li>
 </ul>
 
-## Steps to Create a Kubernetes Cluster
-
-### 1. Install Minikube
-
-First, install Minikube by following the official instructions for your operating system:
-
-```bash
-# Linux
-curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-chmod +x minikube
-sudo mv minikube /usr/local/bin/
-
-# macOS
-brew install minikube
-
-# Windows
-choco install minikube
