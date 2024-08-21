@@ -1,0 +1,39 @@
+In this section, we are going to configure nginx ingress controller for our cluster. These instructions are made from the official documentation at "https://docs.nginx.com/nginx-ingress-controller/installation/installing-nic/installation-with-manifests/".
+
+=> Clone the NGINX Ingress Controller repository using the command shown below, and replace <version_number> with the specific release you want to use. In our case, we will use th version v3.6.1:
+git clone https://github.com/nginxinc/kubernetes-ingress.git --branch v3.6.1
+
+=> change into the kubernetes-ingress folder:
+cd kubernetes-ingress
+
+=> Create a namespace and a service account:
+kubectl apply -f deployments/common/ns-and-sa.yaml
+
+=> Create a cluster role and binding for the service account:
+kubectl apply -f deployments/rbac/rbac.yaml
+
+=> Create a ConfigMap to customize your NGINX settings:
+kubectl apply -f deployments/common/nginx-config.yaml
+
+=> Create an IngressClass resource. NGINX Ingress Controller won’t start without an IngressClass resource:
+kubectl apply -f deployments/common/ingress-class.yaml
+
+=>To make sure your NGINX Ingress Controller pods reach the Ready state, you’ll need to create custom resource definitions (CRDs) for various components.
+kubectl apply -f config/crd/bases/k8s.nginx.org_virtualservers.yaml
+kubectl apply -f config/crd/bases/k8s.nginx.org_virtualserverroutes.yaml
+kubectl apply -f config/crd/bases/k8s.nginx.org_transportservers.yaml
+kubectl apply -f config/crd/bases/k8s.nginx.org_policies.yaml
+kubectl apply -f config/crd/bases/k8s.nginx.org_globalconfigurations.yaml
+
+=> Create CRDs for VirtualServer and VirtualServerRoute, TransportServer, Policy and GlobalConfiguration:
+kubectl apply -f https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/v3.6.1/deploy/crds.yaml
+
+=> Deploy NGINX Ingress Controller:
+=> You can choose to deploy it as a daemonset or deployment. To make sure that the NGINX Ingress Controller is running in every Node, we are going to use daemonset.
+kubectl apply -f deployments/daemon-set/nginx-ingress.yaml
+
+=> Finally,Confirm NGINX Ingress Controller is running:
+kubectl get pods --namespace=nginx-ingress
+
+=> Make sure that the pods are in the running state, then you go to the browser and visit this URL: "http://{{WORKER_NODE_IP_ADDRESS}}". you should see an nginx 404 not found page. This means that the NGINX ingress controller works fine.
+
