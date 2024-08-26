@@ -35,9 +35,15 @@ sudo vim /etc/containerd/config.toml
 
 => Delete the entire content of the file and replace it with :
 #=============================================================================== Don't copy this line.
-[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
-    SystemdCgroup = true
+version = 2
+[plugins]
+  [plugins."io.containerd.grpc.v1.cri"]
+   [plugins."io.containerd.grpc.v1.cri".containerd]
+      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
+        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+          runtime_type = "io.containerd.runc.v2"
+          [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+            SystemdCgroup = true
 #===============================================================================  Don't copy this line.
 
 => Restart the containerd service:
